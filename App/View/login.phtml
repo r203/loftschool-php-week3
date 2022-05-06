@@ -1,0 +1,45 @@
+<html>
+  <head></head>
+  <body>
+    <h3><?=$this->title;?></h3>
+
+    <?php
+    /** @var \App\Model\User $user */
+    $user = $this->user; ?>
+
+    <? if (!$user): ?>
+    <h3>ЗАРЕГИСТРИРОВАТЬСЯ</h3>
+    <form method="post" action="/login/register">
+      <label for="name">login:</label>
+      <input type="text" value="" name="name"><br>
+
+      <label for="email">email:</label>
+      <input type="text" value="" name="email"><br>
+
+      <label for="password">password:</label>
+      <input type="text" value="" name="password"><br>
+
+      <label for="password2">Confirm password:</label>
+      <input type="text" value="" name="password2"><br>
+
+      <input type="submit" value="Зарегистрироваться">
+    </form>
+
+
+    <h3>ВОЙТИ</h3>
+    <form method="post" action="/login/auth">
+
+      <label for="email">email:</label>
+      <input type="text" value="" name="email"><br>
+
+      <label for="password">password:</label>
+      <input type="text" value="" name="password"><br>
+
+      <input type="submit" value="Зарегистрироваться">
+    </form>
+
+    <? else: ?>
+      Вы вошли как <?=$user->getName();?>
+    <? endif; ?>
+  </body>
+</html>

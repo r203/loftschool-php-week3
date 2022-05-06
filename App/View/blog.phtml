@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    .wrap {
+      position: relative;
+      border: 1px solid #7b1fa2;
+      padding: 10px;
+      width: 300px;
+      box-shadow: rgb(0 0 0 / 15%) 1.95px 1.95px 2.6px;
+      margin-bottom: 5px;
+    }
+
+    .author {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .date {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 10px;
+    }
+
+    .admin {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      font-size: 10px;
+      color: #7b1fa2;
+    }
+
+    .image {
+      max-width: 200px;
+    }
+  </style>
+List of messages<br><hr>
+<?php
+/** @var $message \App\Model\Message */
+/** @var $user \App\Model\User */
+$user = $this->user;
+?>
+<?php if ($messages = $this->messages): ?>
+  <?php foreach ($messages as $message): ?>
+    <div class="wrap">
+      <? if ($user->isAdmin()): ?>
+        <a href="/admin/deleteMessage/?id=<?=$message->getId();?>" class="admin">delete</a>
+      <? endif; ?>
+      <? if($author = $message->getAuthor()):?>
+      <div class="author"><?=htmlspecialchars($author->getName());?></div>
+      <? else: ?>
+        <div class="author">Author was deleted</div>
+      <? endif; ?>
+      <div class="date">
+        <?=$message->getCreatedAt();?></div>
+      <div class="text">
+        <?=htmlspecialchars(nl2br($message->getText()));?>
+      </div>
+      <? if ($message->getImage()): ?>
+        <img src="/images/<?=$message->getImage();?>" alt="<?=$message->getImage();?>" class="image">
+      <? endif; ?>
+    </div>
+  <?php endforeach; ?>
+
+<?php else: ?>
+  Messages not found
+<?php endif; ?>
+<br><br><hr><br><br>
+Add message<br>
+<form method="post" action="/blog/addMessage" enctype="multipart/form-data">
+      <label for="text">Message:</label>
+      <textarea type="text" value="" name="text"></textarea><br>
+
+      <label for="file">Image:</label>
+      <input type="file" value="" name="image"><br>
+
+      <input type="submit" value="Send">
+</form>
+</body>
+</html>
